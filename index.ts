@@ -6,23 +6,7 @@ interface SystemEncounter {
   avoidable: boolean
 }
 
-const typeDefs = gql`
-  # This "Book" type defines the queryable fields for every book in our data source.
-  type SystemEncounter {
-    title: String
-    description: String
-    avoidable: Boolean
-  }
-
-  # The "Query" type is special: it lists all of the available queries that
-  # clients can execute, along with the return type for each. In this
-  # case, the "books" query returns an array of zero or more Books (defined above).
-  type Query {
-    systemEncounter: [SystemEncounter]
-  }
-`;
-
-// Data Set
+// Data Set: pull this in from elsewhere
 const systemEncounters: SystemEncounter[] = [
   {
     title: 'Alien Derelict (possible salvage)',
@@ -41,6 +25,22 @@ const systemEncounters: SystemEncounter[] = [
   },
 ];
 
+const typeDefs = gql`
+  # This "Book" type defines the queryable fields for every book in our data source.
+  type SystemEncounter {
+    title: String
+    description: String
+    avoidable: Boolean
+  }
+
+  # The "Query" type is special: it lists all of the available queries that
+  # clients can execute, along with the return type for each. In this
+  # case, the "books" query returns an array of zero or more Books (defined above).
+  type Query {
+    systemEncounter: [SystemEncounter]
+  }
+`;
+
 // Resolvers define the technique for fetching the types defined in the
 // schema. This resolver retrieves books from the "books" array above.
 const resolvers = {
@@ -52,11 +52,9 @@ const resolvers = {
   },
 };
 
-// The ApolloServer constructor requires two parameters: your schema
-// definition and your set of resolvers.
+// params: object with schema definition, set of resolvers.
 const server = new ApolloServer({ typeDefs, resolvers });
 
-// The `listen` method launches a web server.
 server.listen().then(({ url }) => {
   console.log(`🚀  Server ready at ${url}`);
 });
